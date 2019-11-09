@@ -3,4 +3,5 @@
 # mathetmatical approximations for performance (taylor series, for example to find an equation that makes an
 # appropriate solution
 
-import emnist
+
+
