@@ -79,8 +79,8 @@ def zigzag(shape):
     y[x_t + 1:shape[0] * shape[1]] = np.flip(y_r)
 
     # fill a (shape) matrix with the corresponding index value
-    result = np.zeros((10, 10))
-    for i in range(100):
+    result = np.zeros((int(shape[0]), int(shape[1])))
+    for i in range(shape[0]*shape[1]):
         result[int(x[i])][int(y[i])] = i
 
     return result
@@ -89,7 +89,7 @@ def load_data():
     #######################################
     # Preamble
     #######################################
-    i_zig = zigzag((10, 10)).flatten()
+    i_zig = zigzag((14, 14))
 
     #######################################
     # Importing Downloaded raw files
@@ -141,10 +141,10 @@ def load_data():
             #######################################
             # perform dct and collect top 100 absolute value largest, then put in order of occurring (not biggest to least)
             tmp = dct(data[i][j[0]][0:14, 0:14]).flatten()
-            tmp = [tmp[i] for i in np.sort(np.argsort(tmp)[0:100])]
+            tmp = np.asarray([tmp[int(i)] for i in i_zig.flatten()]).reshape(14, 14)
 
             # perform reassignment based on the zig-zag reassignment indices
-            data[i][j[0]][0:10, 0:10] = np.asarray([tmp[int(i)] for i in i_zig]).reshape((10, 10))
+            data[i][j[0]][0:10, 0:10] = tmp[0:10, 0:10]
 
     return data
 

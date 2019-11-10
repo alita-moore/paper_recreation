@@ -77,8 +77,8 @@ def zigzag(shape):
     y[x_t + 1:shape[0] * shape[1]] = np.flip(y_r)
 
     # fill a (shape) matrix with the corresponding index value
-    result = np.zeros((10, 10))
-    for i in range(100):
+    result = np.zeros((int(shape[0]), int(shape[1])))
+    for i in range(shape[0]*shape[1]):
         result[int(x[i])][int(y[i])] = i
 
     return result
@@ -87,7 +87,7 @@ def load_data():
     #######################################
     # Preamble
     #######################################
-    i_zig = zigzag((10, 10)).flatten()
+    i_zig = zigzag((14, 14))
 
     #######################################
     # Importing Downloaded raw files
@@ -139,24 +139,29 @@ def load_data():
             #######################################
             # perform dct and collect top 100 absolute value largest, then put in order of occurring (not biggest to least)
             tmp = dct(data[i][j[0]][0:14, 0:14]).flatten()
-            tmp = [tmp[i] for i in np.sort(np.argsort(tmp)[0:100])]
+            tmp = np.asarray([tmp[int(i)] for i in i_zig.flatten()]).reshape(14, 14)
 
             # perform reassignment based on the zig-zag reassignment indices
-            data[i][j[0]][0:10, 0:10] = np.asarray([tmp[int(i)] for i in i_zig]).reshape((10, 10))
+            data[i][j[0]][0:10, 0:10] = tmp[0:10, 0:10]
 
     return data
 
 
-if not os.path.exists(r'.\data\Processed_DCT_DWT\data.npy'):
-    os.makedirs(r'.\data\Processed_DCT_DWT')
-    data = load_data()
-    np.save(r'.\data\Processed_DCT_DWT\data', data)
-else:
-    data = np.load(r'.\data\Processed_DCT_DWT\data.npy', allow_pickle=True)
+
+
+# if not os.path.exists(r'.\data\Processed_DCT_DWT\data.npy'):
+#     os.makedirs(r'.\data\Processed_DCT_DWT')
+#     data = load_data()
+#     np.save(r'.\data\Processed_DCT_DWT\data', data)
+# else:
+#     data = np.load(r'.\data\Processed_DCT_DWT\data.npy', allow_pickle=True)
+
+data = load_data()
+print('data got')
 
 
 
-def test(sample, label):
+def test(sample, label, features):
     # sample: [train, test] images
     # label: [train, test] labels
 
@@ -168,7 +173,7 @@ def test(sample, label):
 
     # train
     t_start = time.time()
-    train = [item[0:10, 0:10].flatten() for item in sample[0]]
+    train = [item.flatten()[0:features] for item in sample[0]]
     clf.fit(train, label[0])
     t_train = time.time() - t_start
 
@@ -188,15 +193,16 @@ def test(sample, label):
                    "\n\tAverage test time per item: " + str(t_test/float(np.shape(label)[1])))
     print("Overall Accuracy: " + str(accuracy))
 
-n = 60000
+n = 1000
 
 # sample_EMNIST = [data[0][0:n], data[1][0:n]]
 # label_EMNIST = [data[2][0:n], data[3][0:n]]
 # test(sample_EMNIST, label_EMNIST)
 
+features = 196
 sample_MNIST = [data[4][0:n], data[5][0:n]]
 label_MNIST = [data[6][0:n], data[7][0:n]]
-test(sample_MNIST, label_MNIST)
+test(sample_MNIST, label_MNIST, features)
 
 
 
