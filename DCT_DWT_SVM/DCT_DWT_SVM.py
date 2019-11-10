@@ -8,19 +8,26 @@ import os
 import time
 os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
 
+
 def zigzag(shape):
+    ########################
+    # (ONLY WORKS FOR SQUARE SHAPES, FURTHER CHANGES MAY BE USEFUL AND IS SUBJECT TO LATER DEVELOPMENT)
     # perform the same zig-zag assigment that's used in 71
     #
-    # shape = tuple (x,x) for this paper (10,10) (can take a produce any square shape)
-    # output = a list of index on a 10x10 matrix in zig zag order
-    #
-    # this index matrix can be used to quickly index a matrix equation and reassign values
-    x = np.zeros((shape[0] * shape[1], 1))
-    y = np.zeros((shape[0] * shape[1], 1))
+    # shape = tuple (x,x) for this paper (10,10) (can take and produce any square shape)
+    # output = a list of appropriate indexes to assign from a flattened matrix
+    #           (i.e. output = [0, 1, 10, 20 ...] for a 10x10 zigzag pattern. Given a 10x10 arbitrary matrix  A that's
+    #           flattened with np.flatten(), and the zigzag matrix will be 1d B = [A[0], A[1], A[10], A[20] ...]
+    #           The number of zigzag features chosen is directly controllable so B[0:100] will return 100 features
+    #           in a zigzag order. Please note that the output is simply the appropriate index, and this function does
+    #           not directly create B for reasons of optimization
+    #########################
 
     ###########
     # preamble
     ###########
+    x = np.zeros((shape[0] * shape[1], 1))
+    y = np.zeros((shape[0] * shape[1], 1))
     t = 0
     cond_x = True
     cond_y = True
@@ -29,8 +36,9 @@ def zigzag(shape):
     y_t = 0
 
     ############
-    # zig zag until condition is met
+    # Build zig-zag pattern
     ############
+
     while cond:
         # condition verifications
         if x[t] == shape[0] - 1 and cond_x:
@@ -65,16 +73,15 @@ def zigzag(shape):
                 x[t + 1] = x[t] + 1
                 t += 1
 
-    ###########
-    # Finish
     # Due to symmetry, the following mirror can be performed
-    ###########
-
-    # finish zig-zag values
     x_r = (shape[0] - 1) - x[0:y_t]
     y_r = (shape[1] - 1) - y[0:y_t]
     x[x_t + 1:shape[0] * shape[1]] = np.flip(x_r)
     y[x_t + 1:shape[0] * shape[1]] = np.flip(y_r)
+
+    ###########
+    # Create index matrix and return
+    ###########
 
     # fill a linear matrix with the corresponding index in original flattened matrix corresponding to position
     result = np.zeros((1, int(shape[0]) * int(shape[1])))
@@ -82,7 +89,6 @@ def zigzag(shape):
         result[0, i] = int(x[i])*shape[0] + int(y[i])
 
     return result
-
 
 def load_data():
     #######################################
@@ -146,10 +152,6 @@ def load_data():
             data[i][j[0]][0:10, 0:10] = tmp[0:10, 0:10]
 
     return data
-
-
-
-
 # if not os.path.exists(r'.\data\Processed_DCT_DWT\data.npy'):
 #     os.makedirs(r'.\data\Processed_DCT_DWT')
 #     data = load_data()
@@ -180,7 +182,7 @@ def test(sample, label, features):
 
     # test
     t_start = time.time()
-    tmp = [clf.predict([two]) for two in [one[0:10, 0:10].flatten() for one in sample[1]]]
+    tmp = [clf.predict([two]) for two in [one.flatten()[0:features] for one in sample[1]]]
     t_test = time.time() - t_start
 
     # calculate accuracy
