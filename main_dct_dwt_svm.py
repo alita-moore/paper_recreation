@@ -1,16 +1,26 @@
-from DCT_DWT_SVM import load_data, test_svm
+from DCT_DWT_SVM_DEBUG import load_data, test_svm
+import os
+import numpy as np
 
 
-data = load_data.load_data()
-print('data got')
+# recollect_data = False
+#
+# # checks for data, if recollect data is True re-process data again
+# if not os.path.exists(r'.\data\Processed_DCT_DWT\data.npy'):
+#     data = load_data.load_data()
+#     np.save(r'.\data\Processed_DCT_DWT\data', data)
+# elif recollect_data:
+#     data = load_data.load_data()
+#     np.save(r'.\data\Processed_DCT_DWT\data', data)
+# else:
+#     data = np.load(r'.\data\Processed_DCT_DWT\data.npy', allow_pickle=True)
 
-n = 1000
 
-# sample_EMNIST = [data[0][0:n], data[1][0:n]]
-# label_EMNIST = [data[2][0:n], data[3][0:n]]
-# test(sample_EMNIST, label_EMNIST)
+# number of data samples to use
+n = 60000
+data = load_data.load_data(n)
 
 features = 196
-sample_MNIST = [data[4][0:n], data[5][0:n]]
-label_MNIST = [data[6][0:n], data[7][0:n]]
+sample_MNIST = (data[0][0:n], data[1])
+label_MNIST = (data[2][0:n], data[3])
 test_svm.test_svm(sample_MNIST, label_MNIST, features)

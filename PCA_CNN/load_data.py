@@ -7,7 +7,7 @@ from scipy.fftpack import dct
 from DCT_DWT_SVM import zigzag
 
 
-def load_data():
+def load_data(n):
     #######################################
     # Preamble
     #######################################
@@ -16,32 +16,31 @@ def load_data():
     #######################################
     # Importing Downloaded raw files
     #######################################
-    dirs = ['./data/EMNIST/sample/training_processed.pt',
-            './data/EMNIST/sample/test_processed.pt',
-            './data/EMNIST/label/train_label_processed.pt',
-            './data/EMNIST/label/test_label_process.pt',
-            './data/MNIST/processed/training_processed.pt',
-            './data/MNIST/processed/test_processed.pt',
-            './data/MNIST/processed/train_label_processed.pt',
-            './data/MNIST/processed/test_label_process.pt']
+    dirs = ['./data/MNIST/processed/train.pt',
+            './data/MNIST/processed/test_2.pt',
+            './data/MNIST/processed/train_label.pt',
+            './data/MNIST/processed/test_label.pt']
 
     # load tensors
     data = [torch.load(item) for item in dirs]
 
     # transform into squeezed np arrays
     data = [np.squeeze(np.asarray(item)) for item in data]
+    data[0] = data[0][0:n]
+    data[1] = data[1][0:n]
 
     #######################################
     # Pre-Processing
     #######################################
-    index = [0, 1, 4, 5]  # list of image indice such that the labels are not filtered
+    index = [0, 1] # list of image indice such that the labels are not filtered
     for i in index:
         # make images binary using Otsu's method (e.g. -0.5 is not arbitrary)
+        print(i)
         data[i] = (data[i] > -0.5).astype(np.uint8).astype(np.float16)
 
         for j in enumerate(data[i]):
 
-            # clean images using opening morphology technique on a 2x2 kernel (accomplishing the same goal as the 71 paper)
+            # clean images using morphology technique on a 2x2 kernel (accomplishing the same goal as the 71 paper)
             data[i][j[0]] = cv2.morphologyEx(data[i][j[0]].astype(np.uint8), cv2.MORPH_OPEN, np.ones((2, 2)))
 
             #######################################
@@ -64,6 +63,7 @@ def load_data():
             #######################################
 
             # perform dct on image (ortho compresses, and dct is applied twice due to limitations of scipy function)
+            # tmp = dct(dct(data[i][j[0]][14:28, 14:28].T, norm='ortho').T, norm='ortho').flatten()
             tmp = np.round(dct(dct(data[i][j[0]][14:28, 14:28].T, norm='ortho').T, norm='ortho')).flatten()
             data[i][j[0]][0:14, 14:28] = tmp.reshape(14, 14)
 

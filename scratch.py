@@ -7,6 +7,12 @@ import numpy as np
 import os
 import cv2
 os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+from DCT_DWT_SVM_DEBUG import load_data
+import scipy.io
+
+data = load_data.load_data(1000)
+
+#scipy.io.savemat('test.mat',dict(x=x))
 
 
 
