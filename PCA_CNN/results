@@ -1,0 +1,2 @@
+- I was having issues making a sanity check with SVM and the PCA data. turns out that you must perform PCA on
+ALL data at the same time. otherwise it makes the data indistinguishable.

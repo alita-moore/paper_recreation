@@ -20,7 +20,7 @@ import numpy as np
 n = 60000
 data = load_data.load_data(n)
 
-features = 196
+features = 60
 sample_MNIST = (data[0][0:n], data[1])
 label_MNIST = (data[2][0:n], data[3])
 test_svm.test_svm(sample_MNIST, label_MNIST, features)

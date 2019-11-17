@@ -3,7 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+from PCA_CNN import PCA
 
 ####################
 # note that (5) refers to
@@ -16,28 +18,46 @@ os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self):
+        self.n = 60000
+        self.m = 10000
         # self.EMNIST_train = self.__getitem__('EMNIST_train')
         # self.EMNIST_test = self.__getitem__('EMNIST_test')
         # self.EMNIST_train_label = self.__getitem__('EMNIST_train_label')
         # self.EMNIST_test_label = self.__getitem__('EMNIST_test_label')
-        self.MNIST_train = self.__getitem__('MNIST_train')
+        self.MNIST_train = self.__getitem__('MNIST')
         # self.MNIST_test = self.__getitem__('MNIST_test')
-        # self.MNIST_test_label = self.__getitem__('MNIST_test_label')
 
-    def __getitem__(self, item):
-        dirs = {'EMNIST_train' : r'./data/EMNIST/sample/training_processed_(0-1).pt',
-                'EMNIST_test' : r'./data/EMNIST/sample/test_processed_(0-1).pt',
-                'EMNIST_train_label' : r'./data/EMNIST/label/train_label_processed_(0-1).pt',
-                'EMNIST_test_label' : r'./data/EMNIST/label/test_label_process_(0-1).pt',
-                'MNIST_train' : r'./data/MNIST/processed/training_processed_(0-1).pt',
-                'MNIST_test' : r'./data/MNIST/processed/test_processed_(0-1).pt',
-                'MNIST_train_label' : r'./data/MNIST/processed/train_label_processed_(0-1).pt',
-                'MNIST_test_label' : r'./data/MNIST/processed/test_label_process_(0-1).pt'}
 
-        return torch.load(dirs[item])
+    def __getitem__(self, fn):
+        dirs = {'MNIST_train': './data/MNIST/processed/train.pt',
+            'MNIST_test': './data/MNIST/processed/test_2.pt',
+            'MNIST_train_label': './data/MNIST/processed/train_label.pt',
+            'MNIST_test_label': './data/MNIST/processed/test_label.pt'}
+
+        # load the normalized [0,1] data from their respective folders. the normalization follows Singh
+        data_train = torch.load(dirs[fn + '_train'])
+        data_test = torch.load(dirs[fn + '_test'])
+        data = PCA.my_pca(torch.stack([data_train, data_test], dim=0)) # NOT WORKING BECAUSE CANT CONCATENATE?
+        target = torch.load(dirs[str(fn+'_train_label')]) + torch.load(dirs[str(fn+'_test_label')])
+
+        train = [(data[i], target[i]) for i in range(self.n)]
+        test = [(data[i], target[i]) for i in range(60000, 60000 + self.m)]
+        result = (train, test)
+        return result
 
     def __len__(self):
         pass
+
+def uni_polar_sigmoid(output, target):
+
+    pass
+
+# class Net(nn.module):
+#     def __init__(self):
+#         super(Net, self).__init__()
+#
+#     def forward(self):
+#         pass
 
 
 custom_dataset = CustomDataset()
@@ -45,38 +65,45 @@ train_loader = torch.utils.data.DataLoader(dataset=custom_dataset.MNIST_train,
                                            batch_size=64,
                                            shuffle=True)
 
-# inputs = custom_dataset.MNIST_train
-# targets = custom_dataset.MNIST_train_label
-#
-# hyper-parameters
-input_size = 28*28
-output_size = 1
-num_epochs = 10
+
+n = 66
+input_size = n
+target_size = 1
+num_epochs = 200
 learning_rate = 0.001
 
-# define model
-model = nn.Linear(input_size, output_size)
 
+# define model
+model = nn.Linear(input_size, target_size)
+
+######
 # loss and optimizer
-criterion = nn.MSELoss()
+# Singh uses a "uni-polar sigmoid activation function"
+######
+criterion = nn.Sigmoid()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
+perf = [None]*num_epochs
 # train the model
 for epoch in range(num_epochs):
     for item in train_loader:
         # Forward pass
-        inputs = item[0].reshape(-1, 28*28)
+        inputs = item[0].reshape(-1, n).type(torch.float32)
         targets = item[1].reshape(-1, 1).type(torch.float32)
         outputs = model(inputs)
-        loss = criterion(outputs, targets)
+        loss = criterion(outputs)
 
         # Backward and optimize
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
-    if (epoch + 1) % 2 == 0:
+    perf[epoch] = loss.item()
+    if (epoch + 1) % 10 == 0:
         print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item()))
+        # print(np.shape(np.asarray(targets)))
+        # print(np.shape(np.asarray(inputs)))
 
 # # Plot the graph
 # predicted = model(inputs).detach().numpy()
+plt.plot(perf)

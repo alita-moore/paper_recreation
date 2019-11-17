@@ -1,0 +1,238 @@
+n = 1000, feat = 50
+           0       0.88      0.89      0.89        85
+           1       0.68      0.98      0.80       126
+           2       0.89      0.67      0.76       116
+           3       0.88      0.57      0.69       107
+           4       0.68      0.61      0.64       110
+           5       0.55      0.70      0.62        87
+           6       0.84      0.67      0.74        87
+           7       0.80      0.77      0.78        99
+           8       0.76      0.42      0.54        89
+           9       0.47      0.79      0.59        94
+
+    accuracy                           0.71      1000
+   macro avg       0.74      0.71      0.71      1000
+weighted avg       0.75      0.71      0.71      1000
+
+
+Time to train: 0.07811474800109863
+	Average train time per item: 7.811474800109863e-05
+Time to test: 0.10938882827758789
+	Average test time per item: 0.00010938882827758789
+
+------------------------------------------------------
+n = 1000, feat = 196
+           0       0.89      0.89      0.89        85
+           1       0.77      0.98      0.86       126
+           2       0.83      0.65      0.73       116
+           3       0.84      0.59      0.69       107
+           4       0.74      0.66      0.70       110
+           5       0.55      0.76      0.64        87
+           6       0.89      0.72      0.80        87
+           7       0.81      0.83      0.82        99
+           8       0.82      0.56      0.67        89
+           9       0.58      0.85      0.69        94
+
+    accuracy                           0.75      1000
+   macro avg       0.77      0.75      0.75      1000
+weighted avg       0.77      0.75      0.75      1000
+
+
+Time to train: 0.2187352180480957
+	Average train time per item: 0.0002187352180480957
+Time to test: 0.2031106948852539
+	Average test time per item: 0.0002031106948852539
+
+------------------------------------------------------
+n = 5000, feat = 50
+           0       0.90      0.93      0.91       460
+           1       0.81      0.97      0.88       571
+           2       0.90      0.79      0.84       530
+           3       0.81      0.79      0.80       500
+           4       0.79      0.80      0.80       500
+           5       0.75      0.77      0.76       456
+           6       0.85      0.83      0.84       462
+           7       0.85      0.79      0.82       512
+           8       0.81      0.67      0.73       489
+           9       0.72      0.80      0.76       520
+
+    accuracy                           0.82      5000
+   macro avg       0.82      0.82      0.82      5000
+weighted avg       0.82      0.82      0.82      5000
+
+
+Time to train: 0.9530539512634277
+	Average train time per item: 0.00019061079025268555
+Time to test: 1.2655375003814697
+	Average test time per item: 0.00025310750007629393
+
+-------------------------------------------------------
+n = 5000, feat = 196
+           0       0.90      0.95      0.93       460
+           1       0.86      0.98      0.92       571
+           2       0.93      0.80      0.86       530
+           3       0.84      0.84      0.84       500
+           4       0.82      0.88      0.85       500
+           5       0.79      0.80      0.79       456
+           6       0.85      0.87      0.86       462
+           7       0.86      0.82      0.84       512
+           8       0.88      0.73      0.80       489
+           9       0.80      0.82      0.81       520
+
+    accuracy                           0.85      5000
+   macro avg       0.85      0.85      0.85      5000
+weighted avg       0.85      0.85      0.85      5000
+
+
+Time to train: 2.4217073917388916
+	Average train time per item: 0.00048434147834777833
+Time to test: 3.156031370162964
+	Average test time per item: 0.0006312062740325928
+
+-------------------------------------------------------
+n = 60000, feat = 60
+
+Classification report for classifier SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=0.001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False):
+              precision    recall  f1-score   support
+
+           0       0.94      0.98      0.96       980
+           1       0.94      0.98      0.96      1135
+           2       0.92      0.88      0.90      1032
+           3       0.89      0.89      0.89      1010
+           4       0.86      0.89      0.88       982
+           5       0.87      0.85      0.86       892
+           6       0.93      0.94      0.94       958
+           7       0.92      0.89      0.90      1028
+           8       0.88      0.84      0.86       974
+           9       0.86      0.86      0.86      1009
+
+    accuracy                           0.90     10000
+   macro avg       0.90      0.90      0.90     10000
+weighted avg       0.90      0.90      0.90     10000
+
+
+Time to train: 99.03998446464539
+	Average train time per item: 0.009903998446464538
+Time to test: 16.701959133148193
+	Average test time per item: 0.0016701959133148194
+
+
+--------------------------------------------------------
+n = 60,000 feat = 196
+Classification report for classifier SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=0.001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False):
+              precision    recall  f1-score   support
+
+           0       0.95      0.98      0.96       980
+           1       0.95      0.98      0.97      1135
+           2       0.93      0.90      0.91      1032
+           3       0.91      0.91      0.91      1010
+           4       0.90      0.92      0.91       982
+           5       0.88      0.87      0.87       892
+           6       0.93      0.95      0.94       958
+           7       0.92      0.91      0.91      1028
+           8       0.90      0.86      0.88       974
+           9       0.89      0.88      0.88      1009
+
+    accuracy                           0.92     10000
+   macro avg       0.92      0.92      0.92     10000
+weighted avg       0.92      0.92      0.92     10000
+
+
+Time to train: 192.00225925445557
+	Average train time per item: 0.01920022592544556
+Time to test: 42.48139572143555
+	Average test time per item: 0.0042481395721435545
+
+
+--------------------------------------------------------- raw data range 0-1
+n = 60000, feat = 60
+Classification report for classifier SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=0.001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False):
+              precision    recall  f1-score   support
+
+           0       0.94      0.98      0.96       980
+           1       0.93      0.98      0.95      1135
+           2       0.91      0.88      0.90      1032
+           3       0.87      0.87      0.87      1010
+           4       0.87      0.88      0.87       982
+           5       0.85      0.82      0.83       892
+           6       0.92      0.94      0.93       958
+           7       0.91      0.88      0.89      1028
+           8       0.86      0.80      0.83       974
+           9       0.83      0.86      0.85      1009
+
+    accuracy                           0.89     10000
+   macro avg       0.89      0.89      0.89     10000
+weighted avg       0.89      0.89      0.89     10000
+
+
+Time to train: 95.52460074424744
+	Average train time per item: 0.009552460074424743
+Time to test: 16.077014446258545
+	Average test time per item: 0.0016077014446258546
+
+---------------------------
+n = 60000, feat = 196
+Classification report for classifier SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=0.001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False):
+              precision    recall  f1-score   support
+
+           0       0.95      0.98      0.96       980
+           1       0.95      0.98      0.97      1135
+           2       0.93      0.90      0.91      1032
+           3       0.91      0.91      0.91      1010
+           4       0.90      0.92      0.91       982
+           5       0.88      0.87      0.87       892
+           6       0.93      0.95      0.94       958
+           7       0.92      0.91      0.91      1028
+           8       0.90      0.86      0.88       974
+           9       0.89      0.88      0.88      1009
+
+    accuracy                           0.92     10000
+   macro avg       0.92      0.92      0.92     10000
+weighted avg       0.92      0.92      0.92     10000
+
+
+Time to train: 202.18337893486023
+	Average train time per item: 0.020218337893486024
+Time to test: 42.606608867645264
+	Average test time per item: 0.004260660886764527
+
+----------------------- changed gamma from 0.001 to 'scale'
+Classification report for classifier SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='scale', kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False):
+              precision    recall  f1-score   support
+
+           0       0.97      0.99      0.98       980
+           1       0.97      0.99      0.98      1135
+           2       0.96      0.96      0.96      1032
+           3       0.94      0.94      0.94      1010
+           4       0.95      0.93      0.94       982
+           5       0.94      0.93      0.94       892
+           6       0.96      0.97      0.96       958
+           7       0.95      0.94      0.95      1028
+           8       0.95      0.91      0.93       974
+           9       0.91      0.92      0.91      1009
+
+    accuracy                           0.95     10000
+   macro avg       0.95      0.95      0.95     10000
+weighted avg       0.95      0.95      0.95     10000
+
+
+Time to train: 52.075554847717285
+	Average train time per item: 0.005207555484771729
+Time to test: 10.04195761680603
+	Average test time per item: 0.001004195761680603\
+            ABOUT THE SAME AS THE PAPER!!! :D:D:D:D:D

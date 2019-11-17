@@ -37,7 +37,7 @@ def test_svm(sample, label, features):
     # SVM
     # There is no specified kernel used in the SVM, so I assume 'rbf' and gamma = 'scale'
     ###########################
-    clf = svm.SVC(gamma=0.001)
+    clf = svm.SVC(gamma='scale')
 
     # # after running, the train and test data matched as of 5:44pm 11/14
     # save_output_images(sample[0], './check_train_data', label[0])
