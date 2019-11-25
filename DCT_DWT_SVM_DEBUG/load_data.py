@@ -35,7 +35,6 @@ def load_data(n):
     index = [0, 1] # list of image indice such that the labels are not filtered
     for i in index:
         # make images binary using Otsu's method (e.g. -0.5 is not arbitrary)
-        print(i)
         data[i] = (data[i] > 0.25).astype(np.uint8).astype(np.float16)
 
         for j in enumerate(data[i]):
@@ -72,5 +71,11 @@ def load_data(n):
 
             # reassign back into the original matrix
             data[i][j[0]][0:14, 0:14] = tmp
+
+        # print progress
+        if i == 0:
+            print("train data processed")
+        else:
+            print("test data processed")
 
     return data

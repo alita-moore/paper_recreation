@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import svm, metrics
 
-os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+# os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+os.chdir(r'C:\Users\User\Desktop\paper_recreation')
 matplotlib.use('Agg')
 
 
@@ -48,6 +49,7 @@ def test_svm(sample, label, features):
     train = [item[0:14, 0:14].flatten()[0:features] for item in sample[0]]
     clf.fit(train, label[0])
     t_train = time.time() - t_start
+    print("training complete")
 
     # test
     t_start = time.time()

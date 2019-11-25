@@ -6,7 +6,8 @@ import numpy as np
 import cv2
 import os
 import time
-os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+# os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+os.chdir(r'C:\Users\User\Desktop\paper_recreation')
 
 
 def zigzag(shape):

@@ -6,7 +6,8 @@ import torch
 import numpy as np
 import os
 import cv2
-os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+# os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+os.chdir(r'C:\Users\User\Desktop\paper_recreation')
 from DCT_DWT_SVM_DEBUG import load_data
 from PCA_CNN import PCA
 import scipy.io as sio

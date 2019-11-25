@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import svm, metrics
 
-os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+#os.chdir(r'C:\Users\Adria\PycharmProjects\paper_recreation\venv\paper_recreation')
+os.chdir(r'C:\Users\User\Desktop\paper_recreation')
+
 matplotlib.use('Agg')
 
 
@@ -29,7 +31,7 @@ def save_output_images(data, save_dir, label):
         plt.clf()
 
 
-def test_svm(sample, label, original):
+def test_svm(sample, label):
     # sample: [train, test] images
     # label: [train, test] labels
 
@@ -44,11 +46,13 @@ def test_svm(sample, label, original):
     # save_output_images(sample[1], './check_test_data', label[1])
 
     # train
+    print('about to train')
     t_start = time.time()
     train = [item for item in sample[0]]
     clf.fit(train, label[0])
     t_train = time.time() - t_start
 
+    print('about to test')
     # test
     t_start = time.time()
     tmp = [clf.predict([two])[0] for two in sample[1]]
