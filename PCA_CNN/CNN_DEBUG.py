@@ -69,21 +69,11 @@ class CustomDataset(torch.utils.data.Dataset):
         # result = (train, test)
         return data
 
-    def __len__(self):
-        pass
-
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.n = 66
-
-        # Inputs to hidden layer of 99 nodes (as specified by the article)
-        self.hidden = nn.Linear(self.n, 99)
-        self.hidden.weight.data.fill_(random.random()-0.5)
+        self.hidden = nn.Linear(66, 99)
         self.output = nn.Linear(99, 10)
-
-        # with torch.no_grad():
-        #     self.hidden.weight = torch.nn.Parameter(torch.from_numpy(np.random.rand(64, 99)-0.5).type(torch.float32))
 
     def forward(self, x):
         x = self.hidden(x)
@@ -91,76 +81,35 @@ class Net(nn.Module):
         x = x.sigmoid()
         return x
 
+def validate(model, data, criterion):
+    with torch.no_grad():
+        for item in data:
+            y = model(data[0])
+            loss = criterion(y, data[1])
+            return loss
+
 
 custom_dataset = CustomDataset()
 train_loader = torch.utils.data.DataLoader(dataset=custom_dataset.MNIST_train,
                                            batch_size=64,
-                                           shuffle=True)
+                                           shuffle=True)  # outputs (sample[], targets[]) -> (64x66, 64x1)
 test_loader = torch.utils.data.DataLoader(dataset=custom_dataset.MNIST_test,
                                            batch_size=64,
-                                           shuffle=True)
+                                           shuffle=True)  # outputs (sample[], targets[]) -> (64x66, 64x1)
 
-n = 66
-input_size = n
-target_size = 1
-num_epochs = 100
-learning_rate = 0.001
-
-
-# define model
+n, target_size, num_epoc, learning_rate = 66, 1, 100, 0.001
 model = Net()
-
-######
-# loss and optimizer
-# Singh uses a "uni-polar sigmoid activation function"
-######
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
-perf = [None]*num_epochs
-# train the model
+for i in range(num_epoc):
+    for x in train_loader:
+        # run model and collect loss
+        y = model.forward(x[0].float())
+        loss = criterion(y, x[1].float())
 
-for epoch in range(num_epochs):
-    for item in train_loader:
-        if np.shape(item[0])[0] == 64:
-            # Forward pass
-            inputs = item[0].reshape(-1, n).type(torch.float32)
-            targets = item[1].reshape(-1, 1).type(torch.float32)
-            outputs = model.forward(inputs)
-            loss = criterion(outputs, targets)
-
-            # Backward and optimize
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-
-    perf[epoch] = loss.item()
-
-    if (epoch + 1) % 10 == 0:
-        print('Epoch [{}/{}], Loss: {:.4f}, Accuracy: '.format(epoch + 1, num_epochs, loss.item()))
-        # print(np.shape(np.asarray(targets)))
-        # print(np.shape(np.asarray(inputs)))
-
-model.eval()
-test_loss = 0
-correct = 0
-with torch.no_grad():
-    for item in test_loader:
-        inputs = item[0].reshape(-1, n).type(torch.float32)
-        targets = item[1].reshape(-1, 1).type(torch.float32)
-        output = model(inputs)
-        test_loss += F.loss(output, targets, reduction='sum').item()
-        pred = output.argmax(dim=1, keepdim=True)
-        correct += pred.eq(targets.view_as(pred).sum().item)
-
-    test_loss /= 10000
-
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, 10000,
-        100. * correct / 10000))
-
-
-# # Plot the graph
-# predicted = model(inputs).detach().numpy()
-plt.plot(perf)
+        # perform optimization
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    print(str(i) + ': ' + str(loss))
